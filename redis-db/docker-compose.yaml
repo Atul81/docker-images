@@ -1,0 +1,24 @@
+version: '3'
+services:
+    redis:
+        container_name: redis-cache
+        image: redis:latest
+        ports: 
+            - '6379:6379'
+        volumes:
+            - redis-data:/usr/local/etc/redis
+        restart: 'unless-stopped'
+    
+    insight:
+        container_name: insight
+        image: 'redislabs/redisinsight:latest'
+        volumes:
+            - insight-data:/db
+        ports:
+            - '8001:8001'
+        restart: 'unless-stopped'
+
+volumes:
+   redis-data:
+   insight-data:
+

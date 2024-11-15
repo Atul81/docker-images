@@ -1,0 +1,34 @@
+version: '3.7'
+services:
+    codeserver:
+        image: codercom/code-server
+        restart: always
+        container_name: code
+        user: coder:coder
+        environment:
+            - PUID=1000
+            - PGID=1000
+        volumes:
+            - './.config:/home/coder/.config'
+            - '/home/cannon/source/code/project:/home/coder/project'
+            - '/home/cannon/source/code/.local:/home/coder/.local'
+#           - {path/to/your/persistent/data}:/data
+#        If u use https://github.com/jwilder/nginx-proxy (recommended)
+#        environment:
+#            VIRTUAL_HOST: your.domain.tld
+#            VIRTUAL_PORT: 8443
+        ports:
+          # With SSL
+          - "8443:8080"
+          # With HTTP
+          #- "80:8443"
+        command: code-server # --no-auth # if using proxy add: --allow-http
+        
+
+#       Connect via network
+#        networks:
+#            outpost_network:
+
+#networks:
+#    outpost_network:
+#        external: true

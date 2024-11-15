@@ -1,0 +1,16 @@
+version: '3.3'
+services:
+    home-assistant:
+        container_name: homeassistant
+        privileged: false
+        restart: unless-stopped
+        ports:
+            - "8123:8123"
+        environment:
+            - TZ=Asia/Kolkata
+        volumes:
+            - '/PATH_TO_YOUR_CONFIG:/config'
+        # network_mode: host
+        # devices:
+        #     - /dev/ttyUSB0
+        image: 'ghcr.io/home-assistant/home-assistant:stable'

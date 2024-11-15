@@ -1,0 +1,7 @@
+version: '3.3'
+services:    
+    client:
+        image: vergissberlin/hivemq-mqtt-web-client
+        restart: always
+        ports:
+            - 80

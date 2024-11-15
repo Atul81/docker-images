@@ -1,0 +1,54 @@
+version: '3.3'
+services:
+    wireguard:
+        container_name: wireguard
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Asia/Kolkata
+            - SERVERURL=wireguard.domain.com
+            - SERVERPORT=51820
+            - PEERS=1
+            - PEERDNS=auto
+            - INTERNAL_SUBNET=10.13.13.0
+            - ALLOWEDIPS=0.0.0.0/0
+        ports:
+            - '51820:51820/udp'
+        volumes:
+            - '/config:/config'
+            - '/lib/modules:/lib/modules'
+        restart: unless-stopped
+        image: linuxserver/wireguard
+
+    wireguard-ui:
+        privileged: true
+        entrypoint:
+            - /wireguard-ui
+        volumes:
+            - '/tmp/wireguard-ui:/data'
+        ports:
+            - '8080:8080'
+            - '5555:5555'
+        image: 'embarkstudios/wireguard-ui:latest'
+
+    wg:
+      image: ngoduykhanh/wireguard-ui:latest
+      container_name: wgui
+      cap_add:
+        - NET_ADMIN
+      ports:
+        - '5000:5000'
+      environment:
+        - SENDGRID_API_KEY
+        - EMAIL_FROM_ADDRESS
+        - EMAIL_FROM_NAME
+        - SESSION_SECRET
+        - WGUI_USERNAME=alpha
+        - WGUI_PASSWORD=this-unusual-password
+      logging:
+        driver: json-file
+        options:
+          max-size: 50m
+      volumes:
+        - ./db:/app/db
+        - /etc/wireguard:/etc/wireguard

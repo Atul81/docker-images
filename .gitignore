@@ -1,0 +1,5 @@
+/.idea/
+/airflow/dags/
+/pi-hole/
+**/kafka_data/
+**/zookeeper_data/

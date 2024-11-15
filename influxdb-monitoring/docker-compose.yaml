@@ -1,0 +1,30 @@
+version: "3.3"
+services:
+  grafana:
+    image: grafana/grafana
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - grafana-data:/var/lib/grafana
+  influxdb:
+    image: influxdb
+    restart: always
+    ports:
+      - 8086:8086
+      - 8089:8089/udp
+    volumes:
+      - ./influxdb.conf:/etc/influxdb/influxdb.conf
+      - influxdb-data:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=proxmox
+      - INFLUXDB_ADMIN_ENABLED=true
+      - INFLUXDB_ADMIN_PASSWORD=password
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_USER=proxmox
+      - INFLUXDB_USER_PASSWORD=password
+
+volumes:
+  grafana-data:
+  influxdb-data:

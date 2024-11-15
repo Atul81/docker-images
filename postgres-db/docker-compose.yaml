@@ -1,0 +1,43 @@
+version: '3'
+services:
+  postgresdb:
+    volumes:
+      - 'postgres_data:/var/lib/postgresql/data'
+      # - './startup.sql:/docker-entrypoint-initdb.d/startup.sql'
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: postgres
+      # POSTGRES_USER: admin
+      # POSTGRES_PASSWORD: secret
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+
+    image: postgres
+    restart: 'unless-stopped'
+    # networks:
+    #     - default
+
+
+  pg-admin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@postgres.com
+      PGADMIN_DEFAULT_PASSWORD: password
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - "5050:80"
+    volumes:
+      - 'pgadmin_data:/var/lib/pgadmin'
+    restart: 'unless-stopped'
+    # networks:
+    #     - default
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+
+
+# networks:
+#     default:
+#         name: test

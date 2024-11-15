@@ -1,0 +1,33 @@
+version: '3'
+services:
+  timescaledb:
+    volumes:
+      - 'timescaledb_data/:/var/lib/postgresql/data'
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: postgres
+      # POSTGRES_USER: admin
+      # POSTGRES_PASSWORD: secret
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+    image: timescale/timescaledb:latest-pg12
+    restart: 'unless-stopped'
+
+  pg-admin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@postgres.com
+      PGADMIN_DEFAULT_PASSWORD: password
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - "5050:80"
+    volumes:
+      - 'pgadmin-data:/var/lib/pgadmin'
+    restart: 'unless-stopped'
+
+volumes:
+  timescaledb_data:
+  pgadmin-data:
+
+
